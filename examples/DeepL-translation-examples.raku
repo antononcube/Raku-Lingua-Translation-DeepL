@@ -8,7 +8,10 @@ use Lingua::Translation::DeepL;
 use Data::Reshapers;
 
 
-my $res = deepl-translate(
+say deepl-translation('Колко групи могат да се намерят в този облак от точки.');
+
+
+my $res = deepl-translation(
         ['Препоръчай двеста неща от рекомендационната система smrGoods.',
          'Сделать классификатор с логистической регрессии',
          'Fazer um classificador florestal aleatório com 200 árvores'],
@@ -21,10 +24,10 @@ say to-pretty-table($res, align=>'l', field-names => <detected_source_language t
 
 say '-' x 120;
 say "Source languages:";
-say deepl-source-langs;
-say deepl-source-langs(:inverse);
+say deepl-source-languages;
+say deepl-source-languages(:inverse);
 
 say '-' x 120;
 say "Target languages:";
-say deepl-target-langs;
-say deepl-target-langs(:inverse);
+say deepl-target-languages;
+say deepl-target-languages(:inverse);

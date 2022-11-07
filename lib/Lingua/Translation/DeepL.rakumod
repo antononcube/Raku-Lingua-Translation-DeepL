@@ -4,6 +4,8 @@ use HTTP::UserAgent;
 use URI::Encode;
 use JSON::Fast;
 
+unit module Lingua::Translation::DeepL;
+
 #============================================================
 # Source languages
 #============================================================
@@ -44,7 +46,7 @@ my %sourceLangsAbbrToLang = $sourceLangs.lines.map({
 });
 my %sourceLangsLangToAbbr = %sourceLangsAbbrToLang.invert;
 
-sub deepl-source-langs(Bool :$inverse = False) is export {
+sub deepl-source-languages(Bool :$inverse = False) is export {
     return $inverse ?? %sourceLangsAbbrToLang !! %sourceLangsLangToAbbr;
 }
 
@@ -93,7 +95,7 @@ my %targetLangsAbbrToLang = $targetLangs.lines.map({
 });
 my %targetLangsLangToAbbr = %targetLangsAbbrToLang.invert;
 
-sub deepl-target-langs(Bool :$inverse = False) is export {
+sub deepl-target-languages(Bool :$inverse = False) is export {
     return $inverse ?? %targetLangsAbbrToLang !! %targetLangsLangToAbbr;
 }
 
@@ -121,25 +123,25 @@ sub get-url-data(Str $url, UInt :$timeout= 10) {
 #============================================================
 
 #| Text translation using the DeepL API.
-proto deepl-translate($texts is copy,
-                      :$from-lang is copy = Whatever,
-                      Str :$to-lang is copy = 'EN',
-                      :$auth-key is copy = Whatever,
-                      UInt :$timeout= 10,
-                      :$format is copy = Whatever) is export {*}
+proto deepl-translation($texts is copy,
+                        :$from-lang is copy = Whatever,
+                        Str :$to-lang is copy = 'EN',
+                        :$auth-key is copy = Whatever,
+                        UInt :$timeout= 10,
+                        :$format is copy = Whatever) is export {*}
 
 #| Text translation using the DeepL API.
-multi sub deepl-translate(Str $text, *%args) {
-    return deepl-translate([$text,], |%args);
+multi sub deepl-translation(Str $text, *%args) {
+    return deepl-translation([$text,], |%args);
 }
 
 #| Text translation using the DeepL API.
-multi sub  deepl-translate(@texts is copy,
-                           :$from-lang is copy = Whatever,
-                           Str :$to-lang is copy = 'EN',
-                           :$auth-key is copy = Whatever,
-                           UInt :$timeout= 10,
-                           :$format is copy = Whatever) {
+multi sub  deepl-translation(@texts is copy,
+                             :$from-lang is copy = Whatever,
+                             Str :$to-lang is copy = 'EN',
+                             :$auth-key is copy = Whatever,
+                             UInt :$timeout= 10,
+                             :$format is copy = Whatever) {
 
     #------------------------------------------------------
     # Process $from-lang

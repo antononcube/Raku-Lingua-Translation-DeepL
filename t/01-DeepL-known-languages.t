@@ -8,14 +8,14 @@ use Test;
 
 plan 5;
 
-isa-ok deepl-source-langs, Hash;
+isa-ok deepl-source-languages, Hash;
 
-isa-ok deepl-source-langs():inverse, Hash;
+isa-ok deepl-source-languages():inverse, Hash;
 
-isa-ok deepl-target-langs, Hash;
+isa-ok deepl-target-languages, Hash;
 
-isa-ok deepl-target-langs():inverse, Hash;
+isa-ok deepl-target-languages():inverse, Hash;
 
-is deepl-target-langs.keys.sort == deepl-source-langs.keys.sort, False;
+is deepl-target-languages.keys.sort == deepl-source-languages.keys.sort, False;
 
 done-testing;
