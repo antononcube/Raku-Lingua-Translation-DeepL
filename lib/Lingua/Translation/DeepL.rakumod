@@ -6,6 +6,9 @@ use JSON::Fast;
 
 unit module Lingua::Translation::DeepL;
 
+# DeepL API documentation says that up to 50 text parameters can be given.
+constant $maxTextsPerQuery = 50;
+
 #============================================================
 # Source languages
 #============================================================
@@ -46,7 +49,7 @@ my %sourceLangsAbbrToLang = $sourceLangs.lines.map({
 });
 my %sourceLangsLangToAbbr = %sourceLangsAbbrToLang.invert;
 
-sub deepl-source-languages(Bool :$inverse = False) is export {
+our sub deepl-source-languages(Bool :$inverse = False) is export {
     return $inverse ?? %sourceLangsAbbrToLang !! %sourceLangsLangToAbbr;
 }
 
@@ -95,7 +98,7 @@ my %targetLangsAbbrToLang = $targetLangs.lines.map({
 });
 my %targetLangsLangToAbbr = %targetLangsAbbrToLang.invert;
 
-sub deepl-target-languages(Bool :$inverse = False) is export {
+our sub deepl-target-languages(Bool :$inverse = False) is export {
     return $inverse ?? %targetLangsAbbrToLang !! %targetLangsLangToAbbr;
 }
 
@@ -123,16 +126,32 @@ sub get-url-data(Str $url, UInt :$timeout= 10) {
 #============================================================
 
 #| Text translation using the DeepL API.
-proto deepl-translation($texts is copy,
-                        :$from-lang is copy = Whatever,
-                        Str :$to-lang is copy = 'EN',
-                        :$auth-key is copy = Whatever,
-                        UInt :$timeout= 10,
-                        :$format is copy = Whatever) is export {*}
+our proto deepl-translation($texts is copy,
+                            :$from-lang is copy = Whatever,
+                            Str :$to-lang is copy = 'EN',
+                            :$auth-key is copy = Whatever,
+                            UInt :$timeout= 10,
+                            :$format is copy = Whatever) is export {*}
 
 #| Text translation using the DeepL API.
 multi sub deepl-translation(Str $text, *%args) {
     return deepl-translation([$text,], |%args);
+}
+
+#| Text translation using the DeepL API.
+multi sub deepl-translation(@texts where @texts.elems > $maxTextsPerQuery, *%args) {
+    # This might be better done "inside" the main deepl-translation definition.
+    # Better means: no repeated processing of arguments, and no multiple error messages.
+    my @res;
+    for @texts.rotor($maxTextsPerQuery, :partial) -> $t {
+        @res.append( |deepl-translation($t, |%args) )
+    };
+
+    my $format = %args<format> // 'hash';
+    if $format ~~ Str && $format eq 'json' {
+        return '[' ~ @res.join(', ') ~ ']';
+    }
+    return @res;
 }
 
 #| Text translation using the DeepL API.
@@ -192,10 +211,6 @@ multi sub  deepl-translation(@texts is copy,
     #------------------------------------------------------
     # Make DeepL URL
     #------------------------------------------------------
-
-    if @texts.elems > 50 {
-        warn 'DeepL API documentation says that up to 50 text parameters can be given.';
-    }
     my $textQuery = @texts.map({ 'text=' ~ uri_encode($_) }).join('&');
 
     my $url = "https://api-free.deepl.com/v2/translate?$textQuery&auth_key=$auth-key&target_lang=$to-lang";
