@@ -11,7 +11,7 @@ sub MAIN(Str $text,
          UInt :$timeout= 10,
          Str :$format is copy = 'json') {
 
-    if $auth-key eqv 'Whatever' {
+    if $auth-key eq 'Whatever' {
         if %*ENV<DEEPL_AUTH_KEY>:exists {
             $auth-key = %*ENV<DEEPL_AUTH_KEY>;
         } else {
@@ -21,5 +21,13 @@ sub MAIN(Str $text,
         }
     }
 
-    return deepl-translate($text, :$from-lang, :$to-lang, :$auth-key, :$timeout, :$format);
+    my $res =
+            deepl-translate($text,
+                    from-lang => $from-lang eq 'Whatever' ?? Whatever !! $from-lang,
+                    :$to-lang,
+                    :$auth-key,
+                    :$timeout,
+                    :$format);
+
+    say $res;
 }
