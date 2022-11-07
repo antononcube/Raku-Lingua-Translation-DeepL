@@ -44,6 +44,8 @@ my @res = |deepl-translation(
 ```
 
 **Remark:** DeepL allows up to 50 texts to be translated in one API call.
+Hence, if the first argument is an array with more than 50 elements, then it is partitioned
+into up-to-50-elements chunks and those are given to `deepl-translation`.   
 
 ### Languages
 
