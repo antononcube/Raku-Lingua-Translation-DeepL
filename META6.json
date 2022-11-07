@@ -19,11 +19,12 @@
   "resources": [],
   "license": "Artistic-2.0",
   "tags": [
+    "api",
+    "deepl",
     "translation",
     "translator",
-    "web",
-    "api",
-    "deepl"
+    "web service",
+    "web"
   ],
   "api": "1",
   "source-url": "https://github.com/antononcube/Raku-Lingua-Translation-DeepL"
