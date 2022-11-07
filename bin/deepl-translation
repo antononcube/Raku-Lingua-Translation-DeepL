@@ -1,0 +1,25 @@
+#!/usr/bin/env raku
+use v6.d;
+
+use Lingua::Translation::DeepL;
+
+#| Text translation using the DeepL API.
+sub MAIN(Str $text,
+         Str :$from-lang is copy = 'Whatever',
+         Str :$to-lang is copy = 'EN',
+         Str :$auth-key is copy = 'Whatever',
+         UInt :$timeout= 10,
+         Str :$format is copy = 'json') {
+
+    if $auth-key eqv 'Whatever' {
+        if %*ENV<DEEPL_AUTH_KEY>:exists {
+            $auth-key = %*ENV<DEEPL_AUTH_KEY>;
+        } else {
+            note 'Cannot find DeepL authorization key. ' ~
+                    'Please provide a valid key to the argument auth-key, or set the ENV variable DEEPL_AUTH_KEY.';
+            $auth-key = ''
+        }
+    }
+
+    return deepl-translate($text, :$from-lang, :$to-lang, :$auth-key, :$timeout, :$format);
+}

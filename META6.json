@@ -1,0 +1,30 @@
+{
+  "name": "Lingua::Translation::DeepL",
+  "description": "Lingua::Translation::DeepL provides access to the language translation service DeepL (https://www.deepl.com).",
+  "version": "0.1.0",
+  "perl": "6.*",
+  "authors": [
+    "Anton Antonov"
+  ],
+  "auth": "zef:antononcube",
+  "depends": [
+    "HTTP::UserAgent",
+    "URI::Encode"
+  ],
+  "build-depends": [],
+  "test-depends": [],
+  "provides": {
+    "Lingua::Translation::DeepL": "lib/Lingua/Translation/DeepL.rakumod"
+  },
+  "resources": [],
+  "license": "Artistic-2.0",
+  "tags": [
+    "translation",
+    "translator",
+    "web",
+    "api",
+    "deepl"
+  ],
+  "api": "1",
+  "source-url": "Write me!"
+}
