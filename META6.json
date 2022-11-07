@@ -8,8 +8,8 @@
   ],
   "auth": "zef:antononcube",
   "depends": [
-    "HTTP::UserAgent",
-    "URI::Encode"
+    "HTTP::UserAgent:ver<1.1.51+>",
+    "URI::Encode:ver<0.9.0+>"
   ],
   "build-depends": [],
   "test-depends": [],
