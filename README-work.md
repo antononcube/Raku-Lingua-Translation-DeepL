@@ -2,10 +2,15 @@
 
 ## In brief
 
-This Raku package provides access to the language translation service DeepL (https://www.deepl.com).
-For more details of the DeepL's API usage see https://www.deepl.com/docs-api .
+This Raku package provides access to the language translation service [DeepL](https://www.deepl.com), [DL1].
+For more details of the DeepL's API usage see [the documentation](https://www.deepl.com/docs-api), [DL2].
 
 **Remark:** To use the DeepL API one has to register and obtain authorization key. 
+
+**Remark:** This Raku package is much "less ambitious" than the official Python package, [DLp1], developed by DeepL's team. 
+Gradually, over time, I expect to add features to the Raku package that correspond to features of DLp1.
+
+-----
 
 ## Usage examples
 
@@ -81,8 +86,45 @@ then `deepl-translation` attempts to use the env variable `DEEPL_AUTH_KEY`.
 
 --------
 
+## Mermaid diagram
+
+```mermaid
+graph TD
+	UI[/Some natural language text/]
+	TO[/Translation output/]
+	WR[[Web request]]
+	DeepL{{deepl.com}}
+	PJ[Parse JSON]
+	Q{Return<br>hash?}
+	MURL[Make URL]
+	QAK{Auth key<br>supplied?}
+	EAK[[\" Try to find<br>DEEPL_AUTH _KEY<br>in %*ENV \"]]
+	QEAF{Auth key<br>found?}
+	NAK[/Cannot find auth key/]
+	UI --> QAK
+	QAK --> |yes|MURL
+	QAK --> |no|EAK
+	EAK --> QEAF
+	QEAF --> |no|NAK
+	QEAF --> |yes|MURL
+	MURL --> WR 
+	WR -.-> |URL|DeepL 
+	DeepL -.-> |JSON|WR
+	WR --> Q 
+	Q --> |yes|PJ
+	Q --> |no|TO
+	PJ --> TO
+```
+
+--------
+
 ## References
 
-[DL1] [DeepL Translator](https://www.deepl.com/translator).
+[DL1] DeepL, [DeepL Translator](https://www.deepl.com/translator).
 
-[DL2] [DeepL API](https://www.deepl.com/docs-api/).
+[DL2] DeepL, [DeepL API](https://www.deepl.com/docs-api/).
+
+[DLp1] DeepL,
+[DeepL Python Library](https://github.com/DeepLcom/deepl-python),
+(2021),
+[GitHub/DeepLcom](https://github.com/DeepLcom/).
