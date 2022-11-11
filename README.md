@@ -112,7 +112,7 @@ graph TD
 	Q{Return<br>hash?}
 	MURL[Make URL]
 	QAK{Auth key<br>supplied?}
-	EAK[[\" Try to find<br>DEEPL_AUTH _KEY<br>in %*ENV \"]]
+	EAK[["Try to find<br>DEEPL_AUTH _KEY<br>in %*ENV"]]
 	QEAF{Auth key<br>found?}
 	NAK[/Cannot find auth key/]
 	UI --> QAK
