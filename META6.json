@@ -1,7 +1,7 @@
 {
   "name": "Lingua::Translation::DeepL",
   "description": "Lingua::Translation::DeepL provides access to the language translation service DeepL (https://www.deepl.com).",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "perl": "6.*",
   "authors": [
     "Anton Antonov"
