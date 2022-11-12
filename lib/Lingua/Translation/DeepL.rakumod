@@ -130,6 +130,7 @@ our proto deepl-translation($texts is copy,
                             :$from-lang is copy = Whatever,
                             Str :$to-lang is copy = 'EN',
                             :$auth-key is copy = Whatever,
+                            :$formality = Whatever,
                             UInt :$timeout= 10,
                             :$format is copy = Whatever) is export {*}
 
@@ -159,6 +160,7 @@ multi sub  deepl-translation(@texts is copy,
                              :$from-lang is copy = Whatever,
                              Str :$to-lang is copy = 'EN',
                              :$auth-key is copy = Whatever,
+                             :$formality is copy = Whatever,
                              UInt :$timeout= 10,
                              :$format is copy = Whatever) {
 
@@ -187,6 +189,16 @@ multi sub  deepl-translation(@texts is copy,
     unless %targetLangsAbbrToLang{$to-lang.uc}:exists;
 
     #------------------------------------------------------
+    # Process $formality
+    #------------------------------------------------------
+    if $formality.isa(Whatever) { $formality = 'default' }
+    die "The argument formality is expected to be a string or Whatever, 'default', 'less', or æmore'."
+    unless $formality ~~ Str && $formality.lc ∈ <whatever default less more>;
+
+    $formality .= lc;
+    if $formality.lc eq 'whatever' { $formality = 'default' }
+
+    #------------------------------------------------------
     # Process $format
     #------------------------------------------------------
     if $format.isa(Whatever) { $format = 'Whatever' }
@@ -213,7 +225,7 @@ multi sub  deepl-translation(@texts is copy,
     #------------------------------------------------------
     my $textQuery = @texts.map({ 'text=' ~ uri_encode($_) }).join('&');
 
-    my $url = "https://api-free.deepl.com/v2/translate?$textQuery&auth_key=$auth-key&target_lang=$to-lang";
+    my $url = "https://api-free.deepl.com/v2/translate?$textQuery&auth_key=$auth-key&formality=$formality&target_lang=$to-lang";
 
     if $from-lang ~~ Str {
         $url ~= "&source_lang=$from-lang";
