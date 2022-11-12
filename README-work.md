@@ -112,9 +112,9 @@ graph TD
 	MMTC[Compose multiple queries]
 	MSTC[Compose one query]
 	MURL[[Make URL]]
-	TTC[\" Translate \"]
+	TTC[Translate]
 	QAK{Auth key<br>supplied?}
-	EAK[[\" Try to find<br>DEEPL_AUTH _KEY<br>in %*ENV \"]]
+	EAK[["Try to find<br>DEEPL_AUTH _KEY<br>in %*ENV"]]
 	QEAF{Auth key<br>found?}
 	NAK[/Cannot find auth key/]
 	UI --> QAK

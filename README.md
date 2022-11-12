@@ -12,6 +12,25 @@ Gradually, over time, I expect to add features to the Raku package that correspo
 
 -----
 
+## Installation
+
+Package installations from both sources use [zef installer](https://github.com/ugexe/zef) 
+(which should be bundled with the "standard" Rakudo installation file.)
+
+To install the package from [Zef ecosystem](https://raku.land/) use the shell command:
+
+```
+zef install Lingua::Translation::DeepL
+```
+
+To install the package from the GitHub repository use the shell command:
+
+```
+zef install https://github.com/antononcube/Raku-Lingua-Translation-DeepL.git
+```
+
+----
+
 ## Usage examples
 
 ### Translations
@@ -118,9 +137,9 @@ graph TD
 	MMTC[Compose multiple queries]
 	MSTC[Compose one query]
 	MURL[[Make URL]]
-	TTC[\" Translate \"]
+	TTC[Translate]
 	QAK{Auth key<br>supplied?}
-	EAK[[\" Try to find<br>DEEPL_AUTH _KEY<br>in %*ENV \"]]
+	EAK[["Try to find<br>DEEPL_AUTH _KEY<br>in %*ENV"]]
 	QEAF{Auth key<br>found?}
 	NAK[/Cannot find auth key/]
 	UI --> QAK
