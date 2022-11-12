@@ -83,16 +83,18 @@ deepl-target-languages()
 The package provides a Command Line Interface (CLI) script:
 
 ```shell
-> deepl-translation
+deepl-translation --help
+```
+```
 # Usage:
 #   deepl-translation <text> [-f|--from-lang=<Str>] [-t|--to-lang=<Str>] [-a|--auth-key=<Str>] [--timeout[=UInt]] [--format=<Str>] -- Text translation using the DeepL API.
-#  
-#    <text>                  Text to be translated.
-#    -f|--from-lang=<Str>    Source language. [default: 'Whatever']
-#    -t|--to-lang=<Str>      Target language. [default: 'English']
-#    -a|--auth-key=<Str>     Authorization key (to use DeepL API.) [default: 'Whatever']
-#    --timeout[=UInt]        Timeout. [default: 10]
-#    --format=<Str>          Format of the result; one of "json" or "hash". [default: 'json']
+#   
+#     <text>                  Text to be translated.
+#     -f|--from-lang=<Str>    Source language. [default: 'Whatever']
+#     -t|--to-lang=<Str>      Target language. [default: 'English']
+#     -a|--auth-key=<Str>     Authorization key (to use DeepL API.) [default: 'Whatever']
+#     --timeout[=UInt]        Timeout. [default: 10]
+#     --format=<Str>          Format of the result; one of "json" or "hash". [default: 'json']
 ```
 
 **Remark:** When the authorization key argument "auth-key" is specified set to "Whatever"
@@ -102,6 +104,8 @@ then `deepl-translation` attempts to use the env variable `DEEPL_AUTH_KEY`.
 
 ## Mermaid diagram
 
+The following flowchart corresponds to the steps in the package function `deepl-translation`:  
+
 ```mermaid
 graph TD
 	UI[/Some natural language text/]
@@ -110,21 +114,29 @@ graph TD
 	DeepL{{deepl.com}}
 	PJ[Parse JSON]
 	Q{Return<br>hash?}
-	MURL[Make URL]
+	QT50{Are texts<br>> 50?}
+	MMTC[Compose multiple queries]
+	MSTC[Compose one query]
+	MURL[[Make URL]]
+	TTC[\" Translate \"]
 	QAK{Auth key<br>supplied?}
-	EAK[["Try to find<br>DEEPL_AUTH _KEY<br>in %*ENV"]]
+	EAK[[\" Try to find<br>DEEPL_AUTH _KEY<br>in %*ENV \"]]
 	QEAF{Auth key<br>found?}
 	NAK[/Cannot find auth key/]
 	UI --> QAK
-	QAK --> |yes|MURL
+	QAK --> |yes|QT50
 	QAK --> |no|EAK
 	EAK --> QEAF
+	QT50 --> |no|MSTC
+	MSTC --> TTC
+	QT50 --> |yes|MMTC
+	MMTC --> TTC
 	QEAF --> |no|NAK
-	QEAF --> |yes|MURL
-	MURL --> WR 
+	QEAF --> |yes|QT50
+	TTC -.-> MURL -.-> WR -.-> TTC
 	WR -.-> |URL|DeepL 
 	DeepL -.-> |JSON|WR
-	WR --> Q 
+	TTC --> Q 
 	Q --> |yes|PJ
 	Q --> |no|TO
 	PJ --> TO
