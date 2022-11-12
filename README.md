@@ -33,12 +33,10 @@ zef install https://github.com/antononcube/Raku-Lingua-Translation-DeepL.git
 
 ## Usage examples
 
-### Translations
-
 **Remark:** When the authorization key, `auth-key`, is specified to be `Whatever` 
 then `deepl-translation` attempts to use the env variable `DEEPL_AUTH_KEY`.
 
-#### Basic
+### Basic translation
 
 Here is a simple call (automatic language detection by DeepL and translation to English):
 
@@ -50,15 +48,15 @@ say deepl-translation('Колко групи могат да се намерят
 # [{detected_source_language => BG, text => How many groups can be found in this point cloud.}]
 ```
 
+### Multiple texts
+
 Here we translate from Bulgarian, Russian, and Portuguese to English:
 
-#### Multiple texts
-
 ```perl6
-my @res = |deepl-translation(
-        ['Препоръчай двеста неща от рекомендационната система smrGoods.',
-         'Сделать классификатор с логистической регрессии',
-         'Fazer um classificador florestal aleatório com 200 árvores'],
+my @texts = ['Препоръчай двеста неща от рекомендационната система smrGoods.',
+              'Сделать классификатор с логистической регрессии',
+              'Fazer um classificador florestal aleatório com 200 árvores'];
+my @res = |deepl-translation(@texts,
         from-lang => Whatever,
         to-lang => 'English',
         auth-key => Whatever);
@@ -75,7 +73,7 @@ my @res = |deepl-translation(
 Hence, if the first argument is an array with more than 50 elements, then it is partitioned
 into up-to-50-elements chunks and those are given to `deepl-translation`.   
 
-#### Formality of the translations
+### Formality of the translations
 
 The argument "formality" controls whether translations should lean toward informal or formal language. 
 This option is only available for some target languages; see [DLp1] for details.
