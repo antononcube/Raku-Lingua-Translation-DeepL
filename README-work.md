@@ -8,7 +8,7 @@ For more details of the DeepL's API usage see [the documentation](https://www.de
 **Remark:** To use the DeepL API one has to register and obtain authorization key. 
 
 **Remark:** This Raku package is much "less ambitious" than the official Python package, [DLp1], developed by DeepL's team. 
-Gradually, over time, I expect to add features to the Raku package that correspond to features of DLp1.
+Gradually, over time, I expect to add features to the Raku package that correspond to features of [DLp1].
 
 -----
 
@@ -38,6 +38,8 @@ zef install https://github.com/antononcube/Raku-Lingua-Translation-DeepL.git
 **Remark:** When the authorization key, `auth-key`, is specified to be `Whatever` 
 then `deepl-translation` attempts to use the env variable `DEEPL_AUTH_KEY`.
 
+#### Basic
+
 Here is a simple call (automatic language detection by DeepL and translation to English):
 
 ```perl6
@@ -46,6 +48,8 @@ say deepl-translation('Колко групи могат да се намерят
 ```
 
 Here we translate from Bulgarian, Russian, and Portuguese to English:
+
+#### Multiple texts
 
 ```perl6
 my @res = |deepl-translation(
@@ -62,6 +66,22 @@ my @res = |deepl-translation(
 **Remark:** DeepL allows up to 50 texts to be translated in one API call.
 Hence, if the first argument is an array with more than 50 elements, then it is partitioned
 into up-to-50-elements chunks and those are given to `deepl-translation`.   
+
+#### Formality of the translations
+
+The argument "formality" controls whether translations should lean toward informal or formal language. 
+This option is only available for some target languages; see [DLp1] for details.
+
+```perl6
+say deepl-translation('How are you?', to-lang => 'German', auth-key => Whatever, formality => 'more');
+say deepl-translation('How are you?', to-lang => 'German', auth-key => Whatever, formality => 'less');
+```
+
+```perl6
+say deepl-translation('How are you?', to-lang => 'Russian', auth-key => Whatever, formality => 'more');
+say deepl-translation('How are you?', to-lang => 'Russian', auth-key => Whatever, formality => 'less');  
+```
+
 
 ### Languages
 
