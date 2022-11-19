@@ -12,7 +12,7 @@ sub MAIN(Str $text,                                #= Text to be translated.
          Str :f(:$from-lang) is copy = 'Whatever', #= Source language.
          Str :t(:$to-lang) is copy = 'English',    #= Target language.
          Str :a(:$auth-key) is copy = 'Whatever',  #= Authorization key (to use DeepL API.)
-         Str :$formality is copy = 'Whatever',     #= Language formality in the translated text.
+         Str :$formality is copy = 'Whatever',     #= Language formality in the translated text; one of ('more', 'less', 'default', or 'Whatever'.)
          UInt :$timeout= 10,                       #= Timeout.
          Str :$format is copy = 'json',            #= Format of the result; one of "json" or "hash".
          ) {
