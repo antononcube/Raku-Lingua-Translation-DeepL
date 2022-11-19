@@ -131,6 +131,7 @@ our proto deepl-translation($texts is copy,
                             Str :$to-lang is copy = 'EN',
                             :$auth-key is copy = Whatever,
                             :$formality = Whatever,
+                            :$tag-handling = Whatever,
                             UInt :$timeout= 10,
                             :$format is copy = Whatever) is export {*}
 
@@ -161,6 +162,7 @@ multi sub  deepl-translation(@texts is copy,
                              Str :$to-lang is copy = 'EN',
                              :$auth-key is copy = Whatever,
                              :$formality is copy = Whatever,
+                             :$tag-handling is copy = Whatever,
                              UInt :$timeout= 10,
                              :$format is copy = Whatever) {
 
@@ -203,6 +205,16 @@ multi sub  deepl-translation(@texts is copy,
     }
 
     #------------------------------------------------------
+    # Process $tag-handling
+    #------------------------------------------------------
+    if $tag-handling.isa(Whatever) { $tag-handling = 'default' }
+    die "The argument tag-handling is expected to be a string or Whatever, 'default', 'xml', or 'html'."
+    unless $tag-handling ~~ Str && $tag-handling.lc ∈ <whatever default xml html>;
+
+    $tag-handling .= lc;
+    if $tag-handling eq 'whatever' { $formality = 'default' }
+
+    #------------------------------------------------------
     # Process $format
     #------------------------------------------------------
     if $format.isa(Whatever) { $format = 'Whatever' }
@@ -233,6 +245,10 @@ multi sub  deepl-translation(@texts is copy,
 
     if $from-lang ~~ Str {
         $url ~= "&source_lang=$from-lang";
+    }
+
+    if $tag-handling ∈ <xml html> {
+        $url ~= "&tag_handling=$tag-handling";
     }
 
     #------------------------------------------------------
