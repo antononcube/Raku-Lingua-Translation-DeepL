@@ -154,6 +154,18 @@ graph TD
 	PJ --> TO
 ```
 
+
+--------
+
+## Potential problems
+
+On some platforms (say, macOS with M1 processor) execution of `deepl-translation` might give the message:
+
+> WARNING <some-path>rakudo is loading libcrypto in an unsafe way
+
+See ["Problem with libcrypto on MacOS 11 (Big Sur) #81"](https://github.com/sergot/openssl/issues/81)
+for potential solutions.
+
 --------
 
 ## References
