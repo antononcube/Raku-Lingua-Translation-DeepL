@@ -26,6 +26,7 @@ say '-' x 120;
 say "Using formality option:";
 say deepl-translation('How are you?', to-lang => 'German', auth-key => Whatever, formality => 'more');
 say deepl-translation('How are you?', to-lang => 'German', auth-key => Whatever, formality => 'less');
+say deepl-translation('How are you?', to-lang => 'Russian', auth-key => Whatever, formality => 'default');
 
 say '-' x 120;
 
