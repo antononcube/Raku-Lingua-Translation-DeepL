@@ -192,11 +192,11 @@ multi sub  deepl-translation(@texts is copy,
     # Process $formality
     #------------------------------------------------------
     if $formality.isa(Whatever) { $formality = 'default' }
-    die "The argument formality is expected to be a string or Whatever, 'default', 'less', or æmore'."
+    die "The argument formality is expected to be a string or Whatever, 'default', 'less', or 'more'."
     unless $formality ~~ Str && $formality.lc ∈ <whatever default less more>;
 
     $formality .= lc;
-    if $formality.lc eq 'whatever' { $formality = 'default' }
+    if $formality eq 'whatever' { $formality = 'default' }
 
     #------------------------------------------------------
     # Process $format
