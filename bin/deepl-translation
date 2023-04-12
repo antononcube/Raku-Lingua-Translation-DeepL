@@ -8,7 +8,7 @@ my %*SUB-MAIN-OPTS =
         ;
 
 #| Text translation using the DeepL API.
-sub MAIN(Str $text,                                #= Text to be translated.
+multi sub MAIN(Str $text,                          #= Text to be translated.
          Str :f(:$from-lang) is copy = 'Whatever', #= Source language.
          Str :t(:$to-lang) is copy = 'English',    #= Target language.
          Str :a(:$auth-key) is copy = 'Whatever',  #= Authorization key (to use DeepL API.)
@@ -43,4 +43,18 @@ sub MAIN(Str $text,                                #= Text to be translated.
     } else {
         say $res;
     }
+}
+
+multi sub MAIN
+#= Command given as a sequence of words.
+(*@words,
+ Str :f(:$from-lang) is copy = 'Whatever', #= Source language.
+ Str :t(:$to-lang) is copy = 'English',    #= Target language.
+ Str :a(:$auth-key) is copy = 'Whatever',  #= Authorization key (to use DeepL API.)
+ Str :$formality is copy = 'Whatever',     #= Language formality in the translated text; one of ('more', 'less', 'prefer_more', 'prefer_less', 'default', or 'Whatever'.)
+ Str :$tag-handling is copy = 'Whatever',  #= Tag handling spec; one of ('xml', 'html', 'default', or 'Whatever'.)
+ UInt :$timeout= 10,                       #= Timeout.
+ Str :$format is copy = 'json',            #= Format of the result; one of "json" or "hash".
+ ) {
+    return MAIN(@words.join(' ').Str, :$from-lang, :$to-lang, :$auth-key, :$formality, :$format, :$tag-handling, :$timeout, :$format);
 }
