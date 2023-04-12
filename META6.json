@@ -9,6 +9,7 @@
   "auth": "zef:antononcube",
   "depends": [
     "HTTP::UserAgent:ver<1.1.51+>",
+    "JSON::Fast:ver<0.17+>",
     "URI::Encode:ver<0.9.0+>"
   ],
   "build-depends": [],
