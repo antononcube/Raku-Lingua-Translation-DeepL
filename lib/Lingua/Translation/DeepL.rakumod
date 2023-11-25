@@ -1,5 +1,3 @@
-use v6.d;
-
 use HTTP::UserAgent;
 use URI::Encode;
 use JSON::Fast;
