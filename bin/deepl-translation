@@ -17,7 +17,7 @@ multi sub MAIN(
         Str :$formality is copy = 'Whatever',     #= Language formality in the translated text; one of ('more', 'less', 'prefer_more', 'prefer_less', 'default', or 'Whatever'.)
         Str :$tag-handling is copy = 'Whatever',  #= Tag handling spec; one of ('xml', 'html', 'default', or 'Whatever'.)
         UInt :$timeout= 10,                       #= Timeout.
-        Str :$format is copy = 'json',            #= Format of the result; one of "json" or "hash".
+        Str :$format is copy = 'json',            #= Format of the result; one of "json", "hash", or "text".
                ) {
 
     if $auth-key eq 'Whatever' {
@@ -40,12 +40,19 @@ multi sub MAIN(
                     :$formality,
                     :$tag-handling,
                     :$timeout,
-                    :$format);
+                    format => ($format.lc ∈ <values value text> ?? 'hash' !! $format)
+            );
 
-    if $format.lc ∈ <hash raku> {
-        say $res.raku;
-    } else {
-        say $res;
+    given $format.lc {
+        when $_ ∈ <hash raku> { say $res.raku; }
+        when $_ ∈ <values value text> {
+            if $res ~~ Iterable && $res.elems > 0 && $res.head ~~ Map && ($res.head<text>:exists) {
+                say $res.head<text>;
+            } else {
+                say $res.raku;
+            }
+        }
+        default { say $res; }
     }
 }
 
@@ -55,11 +62,10 @@ multi sub MAIN
  Str :f(:$from-lang) is copy = 'Whatever', #= Source language.
  Str :t(:$to-lang) is copy = 'English',    #= Target language.
  Str :a(:$auth-key) is copy = 'Whatever',  #= Authorization key (to use DeepL API.)
- Str :$formality
- is copy = 'Whatever',     #= Language formality in the translated text; one of ('more', 'less', 'prefer_more', 'prefer_less', 'default', or 'Whatever'.)
+ Str :$formality is copy = 'Whatever',     #= Language formality in the translated text; one of ('more', 'less', 'prefer_more', 'prefer_less', 'default', or 'Whatever'.)
  Str :$tag-handling is copy = 'Whatever',  #= Tag handling spec; one of ('xml', 'html', 'default', or 'Whatever'.)
  UInt :$timeout= 10,                       #= Timeout.
- Str :$format is copy = 'json',            #= Format of the result; one of "json" or "hash".
+ Str :$format is copy = 'json',            #= Format of the result; one of "json", "hash", or "text".
  ) {
     return MAIN(@words.join(' ').Str, :$from-lang, :$to-lang, :$auth-key, :$formality, :$format, :$tag-handling,
             :$timeout, :$format);
