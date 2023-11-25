@@ -1,4 +1,4 @@
-# Lingua::Translation::DeepL Raku package
+# Lingua::Translation::DeepL
 
 ## In brief
 
@@ -165,6 +165,20 @@ On some platforms (say, macOS with M1 processor) execution of `deepl-translation
 
 See ["Problem with libcrypto on MacOS 11 (Big Sur) #81"](https://github.com/sergot/openssl/issues/81)
 for potential solutions.
+
+--------
+
+## TODO
+
+- [ ] TODO Implementation 
+  - [ ] TODO Implement accepting `to-lang` value of multiple languages to translate to
+  - [ ] TODO CLI implement the multi-lang argument in the CLI script
+- [ ] TODO Testing
+  - [ ] Add xt unit tests
+- [ ] TODO Documentation
+  - [X] DONE Basic usage documentation 
+  - [ ] TODO Describe utilization and comparisons with LLMs
+    - How using translation LLM prompts compare with DeepL?
 
 --------
 

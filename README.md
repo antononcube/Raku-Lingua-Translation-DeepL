@@ -1,4 +1,4 @@
-# Lingua::Translation::DeepL Raku package
+# Lingua::Translation::DeepL
 
 ## In brief
 
@@ -65,7 +65,7 @@ my @res = |deepl-translation(@texts,
 ```
 ```
 # {detected_source_language => BG, text => Recommend two hundred things from the smrGoods recommendation system.}
-# {detected_source_language => RU, text => Make a classifier with logistic regression}
+# {detected_source_language => RU, text => Making a classifier from logistic regression}
 # {detected_source_language => PT, text => Make a random forest classifier with 200 trees}
 ```
 
@@ -92,7 +92,7 @@ say deepl-translation('How are you?', to-lang => 'Russian', auth-key => Whatever
 say deepl-translation('How are you?', to-lang => 'Russian', auth-key => Whatever, formality => 'less');  
 ```
 ```
-# [{detected_source_language => EN, text => Как Вы?}]
+# [{detected_source_language => EN, text => Как дела?}]
 # [{detected_source_language => EN, text => Как ты?}]
 ```
 
@@ -132,15 +132,17 @@ deepl-translation --help
 ```
 ```
 # Usage:
-#   deepl-translation <text> [-f|--from-lang=<Str>] [-t|--to-lang=<Str>] [-a|--auth-key=<Str>] [--formality=<Str>] [--timeout[=UInt]] [--format=<Str>] -- Text translation using the DeepL API.
+#   deepl-translation [<text>] [-f|--from-lang=<Str>] [-t|--to-lang=<Str>] [-a|--auth-key=<Str>] [--formality=<Str>] [--tag-handling=<Str>] [--timeout[=UInt]] [--format=<Str>] -- Text translation using the DeepL API.
+#   deepl-translation [<words> ...] [-f|--from-lang=<Str>] [-t|--to-lang=<Str>] [-a|--auth-key=<Str>] [--formality=<Str>] [--tag-handling=<Str>] [--timeout[=UInt]] [--format=<Str>] -- Command given as a sequence of words.
 #   
-#     <text>                  Text to be translated.
+#     [<text>]                Text to be translated. If a file name, its content is used.
 #     -f|--from-lang=<Str>    Source language. [default: 'Whatever']
 #     -t|--to-lang=<Str>      Target language. [default: 'English']
 #     -a|--auth-key=<Str>     Authorization key (to use DeepL API.) [default: 'Whatever']
-#     --formality=<Str>       Language formality in the translated text. [default: 'Whatever']
+#     --formality=<Str>       Language formality in the translated text; one of ('more', 'less', 'prefer_more', 'prefer_less', 'default', or 'Whatever'.) [default: 'Whatever']
+#     --tag-handling=<Str>    Tag handling spec; one of ('xml', 'html', 'default', or 'Whatever'.) [default: 'Whatever']
 #     --timeout[=UInt]        Timeout. [default: 10]
-#     --format=<Str>          Format of the result; one of "json" or "hash". [default: 'json']
+#     --format=<Str>          Format of the result; one of "json", "hash", or "text". [default: 'text']
 ```
 
 **Remark:** When the authorization key argument "auth-key" is specified set to "Whatever"
@@ -199,6 +201,20 @@ On some platforms (say, macOS with M1 processor) execution of `deepl-translation
 
 See ["Problem with libcrypto on MacOS 11 (Big Sur) #81"](https://github.com/sergot/openssl/issues/81)
 for potential solutions.
+
+--------
+
+## TODO
+
+- [ ] TODO Implementation 
+  - [ ] TODO Implement accepting `to-lang` value of multiple languages to translate to
+  - [ ] TODO CLI implement the multi-lang argument in the CLI script
+- [ ] TODO Testing
+  - [ ] Add xt unit tests
+- [ ] TODO Documentation
+  - [X] DONE Basic usage documentation 
+  - [ ] TODO Describe utilization and comparisons with LLMs
+    - How using translation LLM prompts compare with DeepL?
 
 --------
 
