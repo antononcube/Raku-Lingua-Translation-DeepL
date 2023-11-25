@@ -4,19 +4,21 @@ use v6.d;
 use Lingua::Translation::DeepL;
 
 my %*SUB-MAIN-OPTS =
-        :named-anywhere,    # allow named variables at any location
+        :named-anywhere,
+        # allow named variables at any location
         ;
 
 #| Text translation using the DeepL API.
-multi sub MAIN(Str $text,                          #= Text to be translated.
-         Str :f(:$from-lang) is copy = 'Whatever', #= Source language.
-         Str :t(:$to-lang) is copy = 'English',    #= Target language.
-         Str :a(:$auth-key) is copy = 'Whatever',  #= Authorization key (to use DeepL API.)
-         Str :$formality is copy = 'Whatever',     #= Language formality in the translated text; one of ('more', 'less', 'prefer_more', 'prefer_less', 'default', or 'Whatever'.)
-         Str :$tag-handling is copy = 'Whatever',  #= Tag handling spec; one of ('xml', 'html', 'default', or 'Whatever'.)
-         UInt :$timeout= 10,                       #= Timeout.
-         Str :$format is copy = 'json',            #= Format of the result; one of "json" or "hash".
-         ) {
+multi sub MAIN(
+        Str $text is copy,                        #= Text to be translated. If a file name, its content is used.
+        Str :f(:$from-lang) is copy = 'Whatever', #= Source language.
+        Str :t(:$to-lang) is copy = 'English',    #= Target language.
+        Str :a(:$auth-key) is copy = 'Whatever',  #= Authorization key (to use DeepL API.)
+        Str :$formality is copy = 'Whatever',     #= Language formality in the translated text; one of ('more', 'less', 'prefer_more', 'prefer_less', 'default', or 'Whatever'.)
+        Str :$tag-handling is copy = 'Whatever',  #= Tag handling spec; one of ('xml', 'html', 'default', or 'Whatever'.)
+        UInt :$timeout= 10,                       #= Timeout.
+        Str :$format is copy = 'json',            #= Format of the result; one of "json" or "hash".
+               ) {
 
     if $auth-key eq 'Whatever' {
         if %*ENV<DEEPL_AUTH_KEY>:exists {
@@ -27,6 +29,8 @@ multi sub MAIN(Str $text,                          #= Text to be translated.
             $auth-key = ''
         }
     }
+
+    if $text.IO.e { $text = slurp($text); }
 
     my $res =
             deepl-translation($text,
@@ -51,10 +55,12 @@ multi sub MAIN
  Str :f(:$from-lang) is copy = 'Whatever', #= Source language.
  Str :t(:$to-lang) is copy = 'English',    #= Target language.
  Str :a(:$auth-key) is copy = 'Whatever',  #= Authorization key (to use DeepL API.)
- Str :$formality is copy = 'Whatever',     #= Language formality in the translated text; one of ('more', 'less', 'prefer_more', 'prefer_less', 'default', or 'Whatever'.)
+ Str :$formality
+ is copy = 'Whatever',     #= Language formality in the translated text; one of ('more', 'less', 'prefer_more', 'prefer_less', 'default', or 'Whatever'.)
  Str :$tag-handling is copy = 'Whatever',  #= Tag handling spec; one of ('xml', 'html', 'default', or 'Whatever'.)
  UInt :$timeout= 10,                       #= Timeout.
  Str :$format is copy = 'json',            #= Format of the result; one of "json" or "hash".
  ) {
-    return MAIN(@words.join(' ').Str, :$from-lang, :$to-lang, :$auth-key, :$formality, :$format, :$tag-handling, :$timeout, :$format);
+    return MAIN(@words.join(' ').Str, :$from-lang, :$to-lang, :$auth-key, :$formality, :$format, :$tag-handling,
+            :$timeout, :$format);
 }
